@@ -18,7 +18,8 @@ int main(int argc, char **argv)
         size_t arr_size = 0;
         size_t ret_code = arr_fill_from_file(f, items, &arr_size);
 
-        print_structs(items, arr_size);
+        if (!ret_code)
+            print_structs(items, arr_size);
         return ret_code;
     }
     else if (argc == 3 && argv[1] && argv[2])
@@ -30,7 +31,8 @@ int main(int argc, char **argv)
         size_t arr_size = 0;
         size_t ret_code = arr_fill_from_file(f, items, &arr_size);
 
-        items_starts_with_substr(items, argv[2], arr_size);
+        if (!ret_code)
+            ret_code = items_starts_with_substr(items, argv[2], arr_size);
 
         return ret_code;
     }
@@ -48,7 +50,8 @@ int main(int argc, char **argv)
         densities(items, arr_size, arr_dens);
         sort_items_by_density(items, arr_size, arr_dens);
 
-        print_structs(items, arr_size);
+        if (!ret_code)
+            print_structs(items, arr_size);
         return ret_code;
     }
     else

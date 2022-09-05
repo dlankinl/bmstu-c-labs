@@ -21,34 +21,27 @@ int str_scanf(FILE *f, char str[], size_t n)
 size_t arr_fill_from_file(FILE *f, item_t items[], size_t *arr_size)
 {
     if (fseek(f, 0L, SEEK_END))
-        return EXIT_FAILURE;
+        return EMPTY_FILE_ERROR;
 
     size_t size = ftell(f);
     fseek(f, 0L, SEEK_SET);
     if (!size)
         return EMPTY_FILE_ERROR;
 
-    items[0].weight = 1;
     *arr_size = 0;
 
     char line[ITEM_NAME_LEN + 1];
-    // double num1, num2;
-    size_t count = 0;
     while (!feof(f))
     {
-        if (count % 3 == 0)
-        {
-            fscanf(f, "%26s", line);
-            strcpy(items[*arr_size].name, line);
-        }
-        else if (count % 3 == 1)
-            fscanf(f, "%lf", &items[*arr_size].weight);
-        else
-            fscanf(f, "%lf", &items[*arr_size].volume);
-        count++;
-        if (count % 3 == 0)
-            ++(*arr_size);
+        fgets(line, ITEM_NAME_LEN + 1, f);
+        line[strlen(line) - 1] = 0;
+        strcpy(items[*arr_size].name, line);
+        fscanf(f, "%lf", &items[*arr_size].weight);
+        fscanf(f, "%lf", &items[*arr_size].volume);
+        getc(f); // лишний символ
+        ++(*arr_size);
     }
+    --(*arr_size);
 
     return EXIT_SUCCESS;
 }
@@ -66,11 +59,17 @@ void print_structs(item_t items[], size_t amount)
 
 size_t items_starts_with_substr(item_t items[], char substr[], size_t amount)
 {
+    size_t count = 0;
     for (size_t i = 0; i < amount; i++)
     {
         if (strstr(items[i].name, substr) - items[i].name == 0)
+        {
+            count++;
             print_struct(items[i]);
+        }
     }
+    if (!count)
+        return NO_MATCHES_ERROR;
     return EXIT_SUCCESS;
 }
 
