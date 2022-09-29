@@ -1,14 +1,23 @@
 #!/bin/bash
 args=""
 
-if [ "$#" -ge 3 ]; then
-    args="$(cat "../data/$3")"
+if [ "$#" -ge 2 ]; then
+    args="$(cat "../data/$2")"
 fi
 
+
 if [ -n "$USE_VALGRIND" ]; then
-    eval valgrind -q --error-exitcode=1 ../../app.exe "$args"  < "$1" > ../data/out.txt
+    if [ -z "$args" ]; then
+        eval valgrind -q --error-exitcode=1 ../../app.exe < "$1" > ../data/out.txt
+    else
+        eval valgrind -q --error-exitcode=1 ../../app.exe "$args" > ../data/out.txt
+    fi
 else
-    eval ../../app.exe "$args"  < "$1" > ../data/out.txt
+    if [ -z "$args" ]; then
+        eval ../../app.exe < "$1" > ../data/out.txt
+    else
+        eval ../../app.exe "$args" > ../data/out.txt
+    fi
 fi
 
 exit_code="$?"

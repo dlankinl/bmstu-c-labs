@@ -7,6 +7,6 @@ chair
 milk
 1.0
 0.001
-chips
+chipschipschipschipschipss
 0.1
 0.0006

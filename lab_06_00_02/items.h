@@ -10,6 +10,7 @@
 #define ITEM_NAME_LEN 25
 #define NAME_LEN 10
 #define NUM_OF_SUBJECTS 4
+#define ARRAY_LEN 15
 #define MY_EPS 1e-6
 
 typedef struct

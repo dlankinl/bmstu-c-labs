@@ -7,6 +7,9 @@ chair
 milk
 1.0
 0.001
-chips
+chipschipschipschipschips
 0.1
 0.0006
+computer
+20.0
+0.03

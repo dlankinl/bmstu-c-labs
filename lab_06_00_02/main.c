@@ -1,7 +1,6 @@
 #include "items.h"
 #include "errors.h"
 
-#define ARRAY_LEN 15
 
 int main(int argc, char **argv)
 {
@@ -20,6 +19,8 @@ int main(int argc, char **argv)
 
         if (!ret_code)
             print_structs(items, arr_size);
+
+        fclose(f);
         return ret_code;
     }
     else if (argc == 3 && argv[1] && argv[2])
@@ -34,6 +35,7 @@ int main(int argc, char **argv)
         if (!ret_code)
             ret_code = items_starts_with_substr(items, argv[2], arr_size);
 
+        fclose(f);
         return ret_code;
     }
     else if (argc == 2 && argv[1])
@@ -47,16 +49,18 @@ int main(int argc, char **argv)
 
         double arr_dens[ARRAY_LEN];
 
-        densities(items, arr_size, arr_dens);
-        sort_items_by_density(items, arr_size, arr_dens);
+        if (!ret_code)
+            ret_code = densities(items, arr_size, arr_dens);
 
         if (!ret_code)
+        {
+            sort_items_by_density(items, arr_size, arr_dens);
             print_structs(items, arr_size);
-        return ret_code;
+        }
+
+        fclose(f);
+        return ret_code;    
     }
     else
-        return EXIT_FAILURE;
-
-    if (f != NULL)
-        fclose(f);
+        return WRONG_ARGS;
 }

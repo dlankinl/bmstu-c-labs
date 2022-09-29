@@ -6,8 +6,6 @@ file_in=$"../data/pos_0${counter}_in.txt"
 file_out=$"../data/pos_0${counter}_out.txt"
 args=$"../data/pos_0${counter}_args.txt"
 
-file_name=$"../data/pos_0${counter}_"
-
 while [ -f "$file_in" ]; do
     ./pos_case.sh "$file_in" "$file_out" "$args"
     exit_code="$?"
@@ -21,7 +19,7 @@ while [ -f "$file_in" ]; do
     if [ "$counter" -gt "9" ]; then
         file_in=$"../data/pos_${counter}_in.txt"
         file_out=$"../data/pos_${counter}_out.txt"
-        args=$"../data/pos_${counter}_args.txt"
+        args=$"../data/pos_0${counter}_args.txt"
     elif [ "$counter" -le "9" ] && [ "$counter" -gt "1" ]; then
         file_in=$"../data/pos_0${counter}_in.txt"
         file_out=$"../data/pos_0${counter}_out.txt"
@@ -29,14 +27,12 @@ while [ -f "$file_in" ]; do
     fi
 done
 
-
-
 counter=1
-file_in=$"../data/neg_0${counter}_in.txt"
+# file_in=$"../data/neg_0${counter}_in.txt"
 args=$"../data/neg_0${counter}_args.txt"
 
 while [ -f "$args" ]; do
-    ./neg_case.sh "$file_in" "$args"
+    ./neg_case.sh "$args"
     exit_code="$?"
     if [ "$exit_code" = "0" ]; then
         echo -e "Negative test №${counter} | \033[32mSUCCEED\033[0m"
