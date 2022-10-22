@@ -1,0 +1,45 @@
+table
+30.0
+0.4
+chair
+5.0
+0.2
+milk
+1.0
+0.001
+chips
+0.1
+0.0006
+wardrobe
+80
+1
+apples
+3
+0.002
+laptop
+1.6
+0.001
+sofa
+100
+2.1
+t-shirt
+0.1
+0.00011
+jeans
+1
+0.002
+personal computer
+20
+0.03
+wood block
+35
+0.2
+bottle of water
+2
+0.002
+garage
+1500
+50
+lift
+552
+6

@@ -1,0 +1,15 @@
+table
+30.0
+0.4
+chair
+5.0
+0.2
+milk
+1.0
+0.001
+chipschipschipschipschips
+0.1
+0.0006
+computer
+20.0
+0.03
