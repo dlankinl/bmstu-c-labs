@@ -1,6 +1,6 @@
 #include "../inc/matrix_math.h"
 
-size_t matrix_addition(int **mtr_1, int **mtr_2, int **res, size_t rows, size_t cols)
+size_t matrix_addition(double **mtr_1, double **mtr_2, double **res, size_t rows, size_t cols)
 {
     for (size_t i = 0; i < rows; i++)
         for (size_t j = 0; j < cols; j++)
@@ -8,7 +8,7 @@ size_t matrix_addition(int **mtr_1, int **mtr_2, int **res, size_t rows, size_t 
     return EXIT_SUCCESS;
 }
 
-size_t matrix_multiply(int **mtr_1, int **mtr_2, int **res, size_t rows1, size_t cols1, size_t cols2)
+size_t matrix_multiply(double **mtr_1, double **mtr_2, double **res, size_t rows1, size_t cols1, size_t cols2)
 {
     for(size_t i = 0; i < rows1; i++)
         for(size_t j = 0; j < cols2; j++)
@@ -19,53 +19,55 @@ size_t matrix_multiply(int **mtr_1, int **mtr_2, int **res, size_t rows1, size_t
     return EXIT_SUCCESS;
 }
 
-void print_matr(int **matrix, size_t rows, size_t cols)
+void print_matr(double **matrix, size_t rows, size_t cols)
 {
     for (size_t i = 0; i < rows; i++)
     {
         for (size_t j = 0; j < cols; j++)
-            printf("%d ", matrix[i][j]);
+            printf("%d ", (int)matrix[i][j]);
         printf("\n");
     }
 }
 
-void swap_rows(int **matrix, size_t index1, size_t index2)
+void swap_rows(double **matrix, size_t index1, size_t index2)
 {
-    int *tmp = matrix[index1];
+    double *tmp = matrix[index1];
     matrix[index1] = matrix[index2];
     matrix[index2] = tmp;
 }
 
-size_t reform_to_triangle(int **matrix, size_t rows, size_t cols)
+void reform_to_triangle(double **matrix, size_t dims)
 {
-    double num;
-    for (size_t i = 0; i < rows; i++)
-        for (size_t j = 0; j < cols; j++)
-        {
-            num = (double)matrix[i][j];
-            matrix[i][j] = num;
-        }
-
-    int max;
     size_t index;
-    for (size_t i = 0; i < cols; i++)
+    for (size_t i = 0; i < dims; i++)
     {
-        index = 0;
-        max = abs(matrix[0][i]);
-        for (size_t j = 1; j < rows; j++)
-        {
-            if (abs(matrix[j][i]) > max)
-            {
+        index = i;  
+        for (size_t j = i; j < dims; j++)
+            if (fabs(matrix[j][i]) > fabs(matrix[index][i]))
                 index = j;
-                max = abs(matrix[j][i]);
-            }
-        }
-        swap_rows(matrix, 0, index);
+        swap_rows(matrix, i, index);
 
-        for (size_t j = 1; j < rows; j++)
-            for (size_t k = 0; k < cols; k++)
-                matrix[j][k] -= matrix[0][k] * (double)(matrix[j][k] / matrix[0][i]);
-        
+        for (size_t j = i + 1; j < dims; j++)
+        {
+            double multiplier = matrix[j][i] / matrix[i][i];
+            for (size_t k = 0; k < dims; k++)
+                matrix[j][k] -= matrix[i][k] * multiplier;
+        }
     }
-    return EXIT_SUCCESS;
+
+    // for (size_t i = 0; i < dims; i++)
+    // {
+    //     for (size_t j = 0; j < dims; j++)
+    //         printf("%lf ", matrix[i][j]);
+    //     printf("\n");
+    // }
+}
+
+double determinant(double **matrix, size_t dims)
+{
+    double dtrmnt = 1.0;
+    reform_to_triangle(matrix, dims);
+    for (size_t i = 0; i < dims; i++)
+        dtrmnt *= matrix[i][i];
+    return dtrmnt;
 }

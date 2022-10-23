@@ -26,12 +26,12 @@ int main(int argc, char **argv)
         size_t input_type1 = 0, input_type2 = 0;
                 
         file_first_line(file_1, &rows1, &cols1, &non_zero1, &input_type1);
-        int **mtr_1 = alloc_matrix(rows1, cols1);
+        double **mtr_1 = alloc_matrix(rows1, cols1);
         if (!mtr_1)
             return ALLOC_ERROR;
 
         file_first_line(file_2, &rows2, &cols2, &non_zero2, &input_type2);
-        int **mtr_2 = alloc_matrix(rows2, cols2);
+        double **mtr_2 = alloc_matrix(rows2, cols2);
         if (!mtr_2)
             return ALLOC_ERROR;
 
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
         print_matr(mtr_2, rows2, cols2);
         printf("\n");
 
-        int **res;
+        double **res;
 
 
         if (strcmp(argv[1], "a") == 0)
@@ -101,7 +101,7 @@ int main(int argc, char **argv)
         size_t rows = 0, cols = 0, non_zero = 0, input_type = 0;
                 
         file_first_line(file, &rows, &cols, &non_zero, &input_type);
-        int **mtr = alloc_matrix(rows, cols);
+        double **mtr = alloc_matrix(rows, cols);
         if (!mtr)
             return ALLOC_ERROR;
 
@@ -115,9 +115,11 @@ int main(int argc, char **argv)
 
         if (cols != rows)
             return NOT_EQUAL_DIMENSIONS_ERROR;
-        reform_to_triangle(mtr, rows, cols);
-        print_matr(mtr, rows, cols);
-        printf("\n");
+        // reform_to_triangle(mtr, rows);
+        double det = determinant(mtr, rows);
+        printf("DET = %lf\n", det);
+        // print_matr(mtr, rows, cols);
+        // printf("\n");
     }
     else
         return WRONG_ARGS;
