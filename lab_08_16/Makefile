@@ -14,21 +14,29 @@ UNIT_OBJ := $(UNIT_C_FILES:$(UNIT_C_DIR)/%.c=$(OBJ_DIR)/%.o)
 UNIT_OBJ += $(filter-out $(OBJ_DIR)/main.o,$(OBJ_FILES))
 
 C_FLAGS := -std=c99 -Wall -Werror -Wpedantic -Wextra -Wfloat-equal -Wfloat-conversion
-UNIT_FLAGS := -lcheck -lpthread -lrt -lsubunit -lm
+# UNIT_FLAGS := -lcheck -lpthread -lrt -lsubunit -lm
+UNIT_FLAGS := -lcheck -lpthread -lrt
 
 APP := app.exe
 UNIT := unit_tests.exe
+COV := func_tests.exe
 
-$(APP) : $(OBJ_FILES)
-	$(CC) $^ -o $@
+$(APP): $(OBJ_FILES)
+	$(CC) $^ -o $@ -lm --coverage
+
+
+# ifeq ($(mode), func)
+# 	$(APP): $(OBJ_FILES)
+# 		$(CC) $^ -o $@ -lm --coverage
+# endif
 
 $(UNIT): $(UNIT_OBJ)
 	$(CC) $(UNIT_OBJ) -o $@ $(UNIT_FLAGS)
 
-$(OBJ_DIR) :
+$(OBJ_DIR):
 	@mkdir -p $@
 
-$(OBJ_DIR)/%.o : $(C_DIR)/%.c $(H_FILES) $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(C_DIR)/%.c $(H_FILES) $(OBJ_DIR)
 	$(CC) $(C_FLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.o: $(UNIT_C_DIR)/%.c $(H_FILES) $(OBJ_DIR)
@@ -37,7 +45,17 @@ $(OBJ_DIR)/%.o: $(UNIT_C_DIR)/%.c $(H_FILES) $(OBJ_DIR)
 .PHONY: clean unit func
 
 clean:
-	$(RM) $(OBJ_DIR)/*.o *.exe
+	$(RM) -r $(OBJ_DIR)/*.o *.exe $(OBJ_DIR)/*.gcda $(OBJ_DIR)/*.gcno $(OBJ_DIR)/report $(OBJ_DIR)/*.info
 
 unit: $(UNIT)
 	./$^
+
+func: C_FLAGS += --coverage
+func: clean $(APP)
+	bash ./func_tests/scripts/func_tests.sh
+	lcov -t "app" -o app.info -c -d .
+	genhtml -o report app.info
+	mv report $(OBJ_DIR)
+	mv app.info $(OBJ_DIR)
+
+release: clean $(APP)
