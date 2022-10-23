@@ -8,11 +8,9 @@
 
 #define EPS 1e-6
 
-size_t matrix_addition(double **mtr_1, double **mtr_2, double **res, size_t rows, size_t cols);
+void matrix_addition(double **mtr_1, double **mtr_2, double **res, size_t rows, size_t cols);
 
-size_t matrix_multiply(double **mtr_1, double **mtr_2, double **res, size_t rows1, size_t cols1, size_t cols2);
-
-void print_matr(double **matrix, size_t rows, size_t cols);
+void matrix_multiply(double **mtr_1, double **mtr_2, double **res, size_t rows1, size_t cols1, size_t cols2);
 
 void swap_rows(double **matrix, size_t index1, size_t index2);
 

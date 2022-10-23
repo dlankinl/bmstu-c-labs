@@ -23,30 +23,19 @@ size_t file_first_line(FILE *f, size_t *rows, size_t *cols, size_t *non_zero)
         istr = strtok(NULL, " ");
         counter++;
     }
-    // printf("%zu - rows, %zu - cols, %zu - non_zero\n", *rows, *cols, *non_zero);
     return EXIT_SUCCESS;
 }
 
 size_t fill_matr_from_file(FILE *f, double **matrix, size_t non_zero)
 {
-    // if (input_type == 1)
-    // {
-    //     for (size_t i = 0; i < rows; i++)
-    //         for (size_t j = 0; j < cols; j++)
-    //             if (fscanf(f, "%lf", &matrix[i][j]) != 1)
-    //                 return INCORRECT_INPUT;
-    // }
-    // else if (input_type == 2)
-    // {
     size_t row, col;
-    int num;
+    double num;
     for (size_t i = 0; i < non_zero; i++)
     {
-        if (fscanf(f, "%zu %zu %d", &row, &col, &num) != 3)
+        if (fscanf(f, "%zu %zu %lf", &row, &col, &num) != 3)
             return INCORRECT_INPUT;
         matrix[row - 1][col - 1] = num;
     }
-    // }
     return EXIT_SUCCESS;
 }
 
@@ -55,7 +44,7 @@ size_t file_mtr_write(FILE *f, double **mtr, size_t rows, size_t cols)
     for (size_t i = 0; i < rows; i++)
     {
         for (size_t j = 0; j < cols; j++)
-            if (fprintf(f, "%d ", (int)mtr[i][j]) < 0)
+            if (fprintf(f, "%.6lf ", mtr[i][j]) < 0)
                 return WRITE_ERROR;
         fprintf(f, "\n");
     }
