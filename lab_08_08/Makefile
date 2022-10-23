@@ -20,7 +20,7 @@ APP := app.exe
 UNIT := unit_tests.exe
 
 $(APP) : $(OBJ_FILES)
-	$(CC) $^ -o $@
+	$(CC) $^ -o $@ -lm
 
 $(UNIT): $(UNIT_OBJ)
 	$(CC) $(UNIT_OBJ) -o $@ $(UNIT_FLAGS)
