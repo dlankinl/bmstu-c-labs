@@ -1,6 +1,6 @@
 #include "../inc/file_handler.h"
 
-size_t file_first_line(FILE *f, size_t *rows, size_t *cols, size_t *non_zero, size_t *input_type)
+size_t file_first_line(FILE *f, size_t *rows, size_t *cols, size_t *non_zero)
 {
     char str[MAX_LEN];
     fgets(str, MAX_LEN, f);
@@ -23,34 +23,30 @@ size_t file_first_line(FILE *f, size_t *rows, size_t *cols, size_t *non_zero, si
         istr = strtok(NULL, " ");
         counter++;
     }
-    if (counter == 3)
-        *input_type = 2;
-    else
-        *input_type = 1;
-    printf("%zu - rows, %zu - cols, %zu - non_zero, %zu - input_type\n", *rows, *cols, *non_zero, *input_type);
+    // printf("%zu - rows, %zu - cols, %zu - non_zero\n", *rows, *cols, *non_zero);
     return EXIT_SUCCESS;
 }
 
-size_t fill_matr_from_file(FILE *f, double **matrix, size_t rows, size_t cols, size_t non_zero, size_t input_type)
+size_t fill_matr_from_file(FILE *f, double **matrix, size_t non_zero)
 {
-    if (input_type == 1)
+    // if (input_type == 1)
+    // {
+    //     for (size_t i = 0; i < rows; i++)
+    //         for (size_t j = 0; j < cols; j++)
+    //             if (fscanf(f, "%lf", &matrix[i][j]) != 1)
+    //                 return INCORRECT_INPUT;
+    // }
+    // else if (input_type == 2)
+    // {
+    size_t row, col;
+    int num;
+    for (size_t i = 0; i < non_zero; i++)
     {
-        for (size_t i = 0; i < rows; i++)
-            for (size_t j = 0; j < cols; j++)
-                if (fscanf(f, "%lf", &matrix[i][j]) != 1)
-                    return INCORRECT_INPUT;
+        if (fscanf(f, "%zu %zu %d", &row, &col, &num) != 3)
+            return INCORRECT_INPUT;
+        matrix[row - 1][col - 1] = num;
     }
-    else if (input_type == 2)
-    {
-        size_t row, col;
-        int num;
-        for (size_t i = 0; i < non_zero; i++)
-        {
-            if (fscanf(f, "%zu %zu %d", &row, &col, &num) != 3)
-                return INCORRECT_INPUT;
-            matrix[row - 1][col - 1] = num;
-        }
-    }
+    // }
     return EXIT_SUCCESS;
 }
 
